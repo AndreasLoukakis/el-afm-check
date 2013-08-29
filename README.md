@@ -6,3 +6,5 @@ gsis seems to have problems responding most of the time.
 
 Includes client side AFM check for validity (which will not make sure it is a company AFM) then allow to submit and echo any results returned.
 As simple as it can get.
+
+Demo: http://alou.gr/demos/afm/
