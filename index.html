@@ -1,0 +1,49 @@
+<html>
+  <head>
+   <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+   <script type="text/javascript">
+   $.noConflict();
+	jQuery(document).ready(function($) {
+	   //First, some client side validation for the AFM number.
+	   function checkAFM (afm) {     
+		   //if(!afm.match(/^\d{9}$/)) return false;
+		   afm = afm.split('').reverse().join('');
+		   
+		   var Num1 = 0;
+		   for(var iDigit= 1; iDigit <=  8; iDigit++)
+		   {
+			  Num1 += afm.charAt(iDigit) << iDigit;     
+		   }
+	
+		   return (Num1 % 11) % 10 == afm.charAt(0);   
+		}
+		
+		$('#givevat').keyup(function() {
+			var currentvalue = $(this).val();
+			if (currentvalue.length != 9) {
+				$('#validatevat').text('Μη έγκυρος αριθμός ψηφίων ΑΦΜ, έχετε συμπληρώσει ' + currentvalue.length + ' από 9');
+				$("input[type=submit]").attr("disabled", "disabled");
+			} else {
+				var isIt = checkAFM(currentvalue);
+				if ( isIt == 'false' || isIt == '0') {
+					$('#validatevat').text('Μη έγκυρος ΑΦΜ, υπάρχει λάθος σε κάποια ψηφία');
+					$("input[type=submit]").attr("disabled", "disabled");
+				} else {
+					$('#validatevat').text('Έγκυρο ΑΦΜ');
+					 $("input[type=submit]").removeAttr("disabled");
+				}
+			}
+		})
+	});
+   </script>
+  </head>
+  <body>
+<h1>Έλεγχος αριθμού AΦΜ</h1>
+<form id="getvatdata" method="POST" action="getafm_eu.php">
+     <b>Δώσε (επαγγελματικό) ΑΦΜ: </b>
+     <input id="givevat" type="text" name="afm" size="9"><span style="color:red" id="validatevat"></span><br>
+     <input type="submit" value="Έλεγχος Α.Φ.Μ." disabled>
+</form>
+
+</html>
